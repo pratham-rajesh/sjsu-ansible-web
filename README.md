@@ -1,4 +1,4 @@
-# SJSU Ansible Web Deployment (Mac M1 Friendly)
+# SJSU Ansible Web Deployment
 
 This repo lets you:
 - Launch **two Ubuntu VMs** on a Mac M‑series using **Multipass**
@@ -67,21 +67,3 @@ Verify in a browser:
 ansible-playbook site.yml --tags undeploy
 ```
 
-## 6) Submit
-
-- Push this folder to GitHub:
-
-```bash
-git init
-git add .
-git commit -m "SJSU Ansible web deploy"
-git branch -M main
-# create an empty repo on GitHub named sjsu-ansible-web, then:
-git remote add origin https://github.com/<YOUR-USER>/sjsu-ansible-web.git
-git push -u origin main
-```
-
-- Fill the provided **Report_Template.rtf** with screenshots and notes.
-- Upload the demo video (optional) or do a live demo per your instructions.
-
-**Good luck!**

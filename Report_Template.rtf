@@ -1,0 +1,44 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Arial;}}
+\fs24
+\b SJSU Individual Assignment Report \b0\line
+Student: ____________________________ \line
+Course: _____________________________ \line
+Date: _______________________________ \line
+\line
+\b Overview \b0\line
+This report documents configuration of two VMs (VM1 and VM2) and deployment of a webserver on port 8080 using Ansible. Each server displays "Hello World from SJSU-X".\line
+\line
+\b Environment \b0\line
+Mac model/chip: ______________________ \line
+macOS version: _______________________ \line
+Tools: Homebrew, Multipass, Ansible\line
+\line
+\b Steps & Evidence (Screenshots) \b0\line
+1. \b Created two VMs\b0\line
+   Insert screenshot of \i multipass list\i0 and/or VM creation.\line\line
+2. \b Ansible inventory set up\b0\line
+   Insert screenshot of \i inventory.ini\i0 and folder structure.\line\line
+3. \b Connectivity test\b0\line
+   Insert screenshot of \i ansible -m ping web\i0 output.\line\line
+4. \b Deployment run\b0\line
+   Insert screenshot of \i ansible-playbook site.yml --tags deploy\i0.\line\line
+5. \b Browser verification\b0\line
+   Insert screenshots of \i http://VM1_IP:8080\i0 and \i http://VM2_IP:8080\i0 showing the different messages.\line\line
+6. \b Undeploy run (cleanup)\b0\line
+   Insert screenshot of \i ansible-playbook site.yml --tags undeploy\i0.\line\line
+\line
+\b GitHub Submission\b0\line
+Link to repository: ________________________________ \line
+Commit hash of final submission: ___________________ \line
+\line
+\b Notes / Issues & Resolutions \b0\line
+(Briefly describe any problems you encountered and how you solved them.)\line
+\line
+\b Instructor Demo Checklist \b0\line
+- [ ] Showed both VMs running\line
+- [ ] Showed Ansible deploy\line
+- [ ] Showed web pages on port 8080 with messages 1 and 2\line
+- [ ] Showed undeploy\line
+\line
+}

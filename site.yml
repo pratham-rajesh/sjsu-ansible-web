@@ -1,0 +1,129 @@
+---
+# Run only the deploy play:
+#   ansible-playbook site.yml --tags deploy
+# Run only the undeploy play:
+#   ansible-playbook site.yml --tags undeploy
+
+- name: Deploy nginx webserver on port 8080
+  hosts: web
+  become: yes
+  tags: [deploy]
+
+  vars:
+    site_name: hello
+    web_root: /var/www/hello
+
+  tasks:
+    - name: Ensure apt cache is up to date
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+
+    - name: Create web root
+      ansible.builtin.file:
+        path: "{{ web_root }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Deploy index.html with host-specific message
+      ansible.builtin.copy:
+        dest: "{{ web_root }}/index.html"
+        content: |
+          <!doctype html>
+          <html>
+            <head><meta charset="utf-8"><title>Hello</title></head>
+            <body style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 40px;">
+              <h1>Hello World from SJSU-{{ server_id }}</h1>
+              <p>This page is served by nginx on port 8080.</p>
+            </body>
+          </html>
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify: reload nginx
+
+    - name: Create nginx server config for port 8080
+      ansible.builtin.copy:
+        dest: "/etc/nginx/sites-available/{{ site_name }}"
+        content: |
+          server {
+              listen 8080 default_server;
+              listen [::]:8080 default_server;
+              server_name _;
+              root {{ web_root }};
+              index index.html;
+              location / {
+                  try_files $uri $uri/ =404;
+              }
+          }
+        mode: '0644'
+      notify: reload nginx
+
+    - name: Disable default site if present
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: reload nginx
+
+    - name: Enable hello site
+      ansible.builtin.file:
+        src: "/etc/nginx/sites-available/{{ site_name }}"
+        dest: "/etc/nginx/sites-enabled/{{ site_name }}"
+        state: link
+      notify: reload nginx
+
+    - name: Ensure nginx is started and enabled
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+
+- name: Undeploy nginx webserver and clean up
+  hosts: web
+  become: yes
+  tags: [undeploy]
+
+  tasks:
+    - name: Stop nginx service (ignore if not installed)
+      ansible.builtin.service:
+        name: nginx
+        state: stopped
+      ignore_errors: yes
+
+    - name: Remove hello site config (enabled)
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/hello
+        state: absent
+      ignore_errors: yes
+
+    - name: Remove hello site config (available)
+      ansible.builtin.file:
+        path: /etc/nginx/sites-available/hello
+        state: absent
+      ignore_errors: yes
+
+    - name: Remove web root
+      ansible.builtin.file:
+        path: /var/www/hello
+        state: absent
+      ignore_errors: yes
+
+    - name: Uninstall nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: absent
+        purge: yes
+      ignore_errors: yes

@@ -1,4 +1,4 @@
-# SJSU Ansible Web Deployment
+# HW #1 - Ansible
 
 This repo lets you:
 - Launch **two Ubuntu VMs** on a Mac M‑series using **Multipass**

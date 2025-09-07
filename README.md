@@ -6,16 +6,6 @@ This repo lets you:
 - Each VM shows a different message: `Hello World from SJSU-1` and `Hello World from SJSU-2`
 - Include **deploy** and **undeploy** plays in one `site.yml`
 
-## 0) Prereqs (Mac, Apple Silicon)
-
-```bash
-# Install Homebrew if you don't have it
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Install multipass & ansible
-brew install --cask multipass
-brew install ansible
-```
 
 ## 1) Create two VMs with Multipass
 

@@ -25,12 +25,12 @@ Copy the IP addresses of `vm1` and `vm2`. Update `inventory.ini` accordingly.
 # Generate a key if you don't have one
 ssh-keygen -t ed25519 -C "sjsu"
 
-# Get IPs (example: 192.168.64.11, 192.168.64.12)
+# Get IPs 
 multipass list
 
 # Copy your key into both VMs
-ssh-copy-id ubuntu@192.168.64.11
-ssh-copy-id ubuntu@192.168.64.12
+ssh-copy-id ubuntu@192.168.64.5
+ssh-copy-id ubuntu@192.168.64.6
 ```
 
 ## 3) Test Ansible connectivity
@@ -48,8 +48,8 @@ ansible-playbook site.yml --tags deploy
 ```
 
 Verify in a browser:
-- `http://<vm1-ip>:8080` shows **Hello World from SJSU-1**
-- `http://<vm2-ip>:8080` shows **Hello World from SJSU-2**
+- `http://192.168.64.5:8080` shows **Hello World from SJSU-1**
+- `http://192.168.64.6:8080` shows **Hello World from SJSU-2**
 
 ## 5) Undeploy
 
